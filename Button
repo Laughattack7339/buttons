@@ -1,0 +1,63 @@
+import pygame
+import webbrowser
+
+pygame.init()
+
+
+screen_width = 800
+screen_highth = 600
+soundbite = 'jump.wav'
+sound1 = pygame.mixer.Sound(soundbite)
+screen = pygame.display.set_mode((screen_width, screen_highth))
+button_img = pygame.image.load('hi.png').convert_alpha()
+img = pygame.image.load('robo_cycle.png').convert_alpha()
+running = True
+pygame.mixer.init(devicename= "put your auido device here")
+
+
+def open():
+    webbrowser.open("https://www.youtube.com/")
+
+
+
+class Button():
+    def __init__(self, x, y, image, scale):
+        width = image.get_width()
+        height = image.get_height()
+        self.image = pygame.transform.scale(image, (int(width* scale), int(height * scale)))
+        self.rect = self.image.get_rect()
+        self.rect.topleft = (x, y)
+        self.clicked = False
+    def draw(self):
+        
+        pos = pygame.mouse.get_pos()
+        
+        if self.rect.collidepoint(pos):
+            if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
+                self.clicked = True
+                print("HI")
+                sound1.play()
+                
+                
+
+        if pygame.mouse.get_pressed()[0] == 0:
+            self.clicked = False
+        
+        
+        
+        screen.blit(self.image, (self.rect.x, self.rect.y))
+
+        
+start_button = Button(100, 200, button_img, 2)
+
+while running:
+    screen.fill((202, 228, 241))
+    start_button.draw()
+
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+            
+        pygame.display.update()  
+
+pygame.quit()
